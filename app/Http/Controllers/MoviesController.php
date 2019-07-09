@@ -13,7 +13,16 @@ class MoviesController extends Controller
     {
         // return Movie::all();
 
-        
+        $word = request()->input('word');
+        // $skip = request()->input('skip', 0);
+        // $take = request()->input('take', Movie::get()->count());
+
+        if ($word) {
+            return Movie::search($word);
+        } else {
+            // return Movie::skip($skip)->take($take)->get();
+            return Movie::all();
+        }
     }
 
     public function create()

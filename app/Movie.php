@@ -18,4 +18,14 @@ class Movie extends Model
         'releaseDate' => 'required|unique:releaseDate',
         'imageUrl' => 'url'
     ];
+
+    public static function search($word)
+    {
+        return self::where('title', 'LIKE', '%'.$word.'%')->get();
+    }
+
+    // public static function search($word, $skip, $take)
+    // {
+    //     return self::where('name', 'LIKE', '%'.$word.'%')->skip($skip)->take($take)->get();
+    // }
 }
