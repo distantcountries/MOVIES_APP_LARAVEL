@@ -12,20 +12,15 @@ class Movie extends Model
     ];
 
     const STORE_RULES = [
-        'title' => 'required|unique:title|max:255',
+        'title' => 'required|unique:movies|max:255',
         'director' => 'required',
         'duration' => 'required|numeric|min:1|max:500',
-        'releaseDate' => 'required|unique:releaseDate',
+        'releaseDate' => 'required|unique:movies',
         'imageUrl' => 'url'
     ];
 
-    public static function search($word)
-    {
-        return self::where('title', 'LIKE', '%'.$word.'%')->get();
+    public static function search($title, $skip, $take) {
+        return self::where('title', 'LIKE', '%' . $title . '%')->skip($skip)->take($take)->get();
     }
 
-    // public static function search($word, $skip, $take)
-    // {
-    //     return self::where('name', 'LIKE', '%'.$word.'%')->skip($skip)->take($take)->get();
-    // }
 }

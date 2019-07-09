@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// use App\Http\Requests\MovieRequest;
 use App\Movie;
 use Illuminate\Http\Request;
 
@@ -11,16 +10,15 @@ class MoviesController extends Controller
 
     public function index()
     {
-        // return Movie::all();
+        $take = request()->input('take', Movie::get()->count());
+        $skip = request()->input('skip', 0);
+        $title = request()->input('title');
 
-        $word = request()->input('word');
-        // $skip = request()->input('skip', 0);
-        // $take = request()->input('take', Movie::get()->count());
-
-        if ($word) {
-            return Movie::search($word);
+        if ($title) {
+            return Movie::search($title, $skip, $take);
+        } else if($skip && $take){
+            return Movie::skip($skip)->take($take)->get();
         } else {
-            // return Movie::skip($skip)->take($take)->get();
             return Movie::all();
         }
     }
@@ -34,7 +32,7 @@ class MoviesController extends Controller
     {
         //1
 
-        // $this->validate(request(), Movie::STORE_RULES);
+        $this->validate(request(), Movie::STORE_RULES);
 
         $movie = new Movie();
 
@@ -50,7 +48,6 @@ class MoviesController extends Controller
         return $movie;
         // return Movie::create($request->all());
 
-        //2
     }
 
     public function show($id)
@@ -59,14 +56,9 @@ class MoviesController extends Controller
     }
 
 
-    public function edit($id)
-    {
-        //
-    }
-
     public function update(Request $request, $id)
     {
-        // $this->validate(request(), Movie::STORE_RULES);
+        $this->validate(request(), Movie::STORE_RULES);
 
         $movie = Movie::find($id);
 
