@@ -1,0 +1,3 @@
+Testirati API preko curl komande
+curl http://127.0.0.1:8000/api/movies/3
+curl -i http://127.0.0.1:8000/api/movies/3...
