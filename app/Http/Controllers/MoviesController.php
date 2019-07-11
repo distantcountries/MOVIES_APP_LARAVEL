@@ -7,6 +7,17 @@ use Illuminate\Http\Request;
 
 class MoviesController extends Controller
 {
+    //provera da ako postoji film pod odredjenim titlom ne moze se kreirati film sa istim titlom i date-om
+    //isto ako postoji film sa odredjenim date-om ne moze se kreirati novi sa istim i titlom
+    public function checkIfExists($title, $date)
+    {
+        if (Movie::where('title', $title)->first()) {
+            if (Movie::where('releaseDate', $date)->first()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function index()
     {
@@ -31,6 +42,12 @@ class MoviesController extends Controller
     public function store(Request $request)
     {
         //1
+
+        $request->duration = intval($request->duration);
+        if ($this->checkIfExists($request->input('title'), $request->input('releaseDate'))) {
+            print_r('Postoji film sa tim imenom i istim datumom');
+            return;
+        }
 
         $this->validate(request(), Movie::STORE_RULES);
 
@@ -58,21 +75,16 @@ class MoviesController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->duration = intval($request->duration);
+        if ($this->checkIfExists($request->input('title'), $request->input('releaseDate'))) {
+            print_r('Postoji film sa tim imenom i istim datumom');
+            return;
+        }
+
         $this->validate(request(), Movie::STORE_RULES);
 
         $movie = Movie::find($id);
 
-        //1
-        // $movie->title = $request->input('title');
-        // $movie->director = $request->input('director');
-        // $movie->imageUrl = $request->input('imageUrl');
-        // $movie->duration = $request->input('duration');
-        // $movie->releaseDate = $request->input('releaseDate');
-        // $movie->genre = $request->input('genre');
-
-        // $movie->save();
-
-        //2
         $movie->update($request->all());
 
         return $movie;

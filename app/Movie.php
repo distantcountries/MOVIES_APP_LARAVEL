@@ -11,11 +11,18 @@ class Movie extends Model
         'title', 'director', 'imageUrl', 'duration', 'releaseDate', 'genre'
     ];
 
+    //zbog metode checkIfExists u kontroleru nece stajati
+        // 'title' => 'required|unique:movies|max:255'
+        // 'releaseDate' => 'required|unique:movies'
+    //brisemo unique jer je metoda dovoljna
+
+
+
     const STORE_RULES = [
-        'title' => 'required|unique:movies|max:255',
+        'title' => 'required|max:255',
         'director' => 'required',
         'duration' => 'required|numeric|min:1|max:500',
-        'releaseDate' => 'required|unique:movies',
+        'releaseDate' => 'required',
         'imageUrl' => 'url'
     ];
 
